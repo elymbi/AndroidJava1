@@ -44,7 +44,7 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.toast_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast myToast = Toast.makeText(getActivity(), "Hello toast!", Toast.LENGTH_SHORT);
+                Toast myToast = Toast.makeText(getActivity(), getString(R.string.toast), Toast.LENGTH_SHORT);
                 myToast.show();
             }
         });
