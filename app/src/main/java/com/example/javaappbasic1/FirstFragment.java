@@ -12,6 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
+
 import static com.example.javaappbasic1.MainActivity.packageName;
 
 public class FirstFragment extends Fragment {
@@ -61,12 +68,20 @@ public class FirstFragment extends Fragment {
     }
 
     private void displayFile() {
-        showCountTextView.setText(R.string.fromFile);
         Resources resources = getResources();
 
         int number_for_file = getResources().getIdentifier("fisi_grundlagen",
                 "raw", packageName);
-        resources.openRawResource(number_for_file);
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resources.openRawResource(number_for_file)))) {
+            String line;
+            while((line = br.readLine()) != null) {
+                showCountTextView.setText(line);
+                break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void countMe() {
