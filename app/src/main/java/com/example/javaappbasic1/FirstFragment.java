@@ -1,5 +1,6 @@
 package com.example.javaappbasic1;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
+import static com.example.javaappbasic1.MainActivity.packageName;
 
 public class FirstFragment extends Fragment {
 
@@ -52,15 +55,24 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.count_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countMe(view);
+                displayFile();
             }
         });
     }
 
-    private void countMe(View view) {
+    private void displayFile() {
+        showCountTextView.setText(R.string.fromFile);
+        Resources resources = getResources();
+
+        int number_for_file = getResources().getIdentifier("fisi_grundlagen",
+                "raw", packageName);
+        resources.openRawResource(number_for_file);
+    }
+
+    private void countMe() {
         String countString = showCountTextView.getText().toString();
-        Integer count = Integer.parseInt(countString);
+        int count = Integer.parseInt(countString);
         count++;
-        showCountTextView.setText(count.toString());
+        showCountTextView.setText(Integer.toString(count));
     }
 }
