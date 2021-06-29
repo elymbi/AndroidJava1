@@ -23,8 +23,8 @@ import static com.example.javaappbasic1.MainActivity.packageName;
 public class FirstFragment extends Fragment {
 
     TextView showCountTextView;
-    Side currentSide = Side.FRONT;
-
+    Side currentSide = Side.START;
+    int currentCard = 0;
 
 
     @Override
@@ -62,41 +62,48 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 switch (currentSide) {
+                    case START:
+                        currentSide = Side.FRONT;
                     case BACK:
+                        currentCard += 1;
                         currentSide = Side.FRONT;
                         break;
                     case FRONT:
                         currentSide = Side.BACK;
                         break;
                 }
-                displayFile();
+                displayCard();
             }
         });
     }
 
-    private void displayFile() {
+    private void displayCard() {
         Resources resources = getResources();
 
-        int number_for_file = getResources().getIdentifier("small_card",
+        int number_for_file = getResources().getIdentifier("fisi_grundlagen",
                 "raw", packageName);
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resources.openRawResource(number_for_file)))) {
             Html.fromHtml("<h2>Title</h2><br><p>Description here</p>");
             String line;
+            int counter = 0;
 
-            while((line = br.readLine()) != null) {
+            while((line = br.readLine()) != null ) {
                 String[] card_sides = line.split("\\t", 2);
-                if(card_sides.length == 2){
-                    Spanned front_side = Html.fromHtml(card_sides[0]);
-                    Spanned back_side = Html.fromHtml(card_sides[1]);
-                    if(currentSide == Side.FRONT){
-                        showCountTextView.setText(front_side);
-                    }
-                    else{
-                        showCountTextView.setText(back_side);
+                if(counter >= currentCard && card_sides.length == 2){
+                    switch (currentSide) {
+                        case BACK:
+                            Spanned back_side = Html.fromHtml(card_sides[1]);
+                            showCountTextView.setText(back_side);
+                            break;
+                        case FRONT:
+                            Spanned front_side = Html.fromHtml(card_sides[0]);
+                            showCountTextView.setText(front_side);
+                            break;
                     }
                     break;
                 }
+                counter += 1;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,6 +118,6 @@ public class FirstFragment extends Fragment {
     }
 
     private enum Side{
-        FRONT, BACK
+        FRONT, BACK, START
     }
 }
