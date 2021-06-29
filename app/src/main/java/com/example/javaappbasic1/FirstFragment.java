@@ -26,7 +26,7 @@ import static com.example.javaappbasic1.MainActivity.packageName;
 public class FirstFragment extends Fragment {
 
     TextView showCountTextView;
-
+    boolean front;
 
 
 
@@ -78,14 +78,25 @@ public class FirstFragment extends Fragment {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resources.openRawResource(number_for_file)))) {
             Html.fromHtml("<h2>Title</h2><br><p>Description here</p>");
             String line;
+
             while((line = br.readLine()) != null) {
-                Spanned spanned = Html.fromHtml(line);
-                showCountTextView.setText(spanned);
-                break;
+                String[] card_sides = line.split("\\t", 2);
+                if(card_sides.length == 2){
+                    Spanned front_side = Html.fromHtml(card_sides[0]);
+                    Spanned back_side = Html.fromHtml(card_sides[1]);
+                    if(front){
+                        showCountTextView.setText(front_side);
+                    }
+                    else{
+                        showCountTextView.setText(back_side);
+                    }
+                    break;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        front = !front;
     }
 
     private void countMe() {
