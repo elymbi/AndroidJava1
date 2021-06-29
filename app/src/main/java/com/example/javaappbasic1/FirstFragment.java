@@ -2,6 +2,8 @@ package com.example.javaappbasic1;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,13 +72,15 @@ public class FirstFragment extends Fragment {
     private void displayFile() {
         Resources resources = getResources();
 
-        int number_for_file = getResources().getIdentifier("fisi_grundlagen",
+        int number_for_file = getResources().getIdentifier("small_card",
                 "raw", packageName);
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resources.openRawResource(number_for_file)))) {
+            Html.fromHtml("<h2>Title</h2><br><p>Description here</p>");
             String line;
             while((line = br.readLine()) != null) {
-                showCountTextView.setText(line);
+                Spanned spanned = Html.fromHtml(line);
+                showCountTextView.setText(spanned);
                 break;
             }
         } catch (IOException e) {
