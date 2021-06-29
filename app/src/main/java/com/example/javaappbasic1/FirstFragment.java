@@ -17,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.javaappbasic1.MainActivity.packageName;
 
@@ -25,6 +27,7 @@ public class FirstFragment extends Fragment {
     TextView showCountTextView;
     Side currentSide = Side.START;
     int currentCard = 0;
+    List<String> cardsList = null;
 
 
     @Override
@@ -63,6 +66,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 switch (currentSide) {
                     case START:
+                        parseFile("fisi_grundlagen");
                         currentSide = Side.FRONT;
                     case BACK:
                         currentCard += 1;
@@ -77,36 +81,37 @@ public class FirstFragment extends Fragment {
         });
     }
 
-    private void displayCard() {
+    private void parseFile(String fileName) {
         Resources resources = getResources();
 
         int number_for_file = getResources().getIdentifier("fisi_grundlagen",
                 "raw", packageName);
-
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resources.openRawResource(number_for_file)))) {
-            Html.fromHtml("<h2>Title</h2><br><p>Description here</p>");
             String line;
-            int counter = 0;
-
-            while((line = br.readLine()) != null ) {
-                String[] card_sides = line.split("\\t", 2);
-                if(counter >= currentCard && card_sides.length == 2){
-                    switch (currentSide) {
-                        case BACK:
-                            Spanned back_side = Html.fromHtml(card_sides[1]);
-                            showCountTextView.setText(back_side);
-                            break;
-                        case FRONT:
-                            Spanned front_side = Html.fromHtml(card_sides[0]);
-                            showCountTextView.setText(front_side);
-                            break;
-                    }
-                    break;
-                }
-                counter += 1;
+            cardsList = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                cardsList.add(line);
             }
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private void displayCard() {
+
+        String[] card_sides = cardsList.get(currentCard).split("\\t", 2);
+        if(card_sides.length == 2){
+            switch (currentSide) {
+                case BACK:
+                    Spanned back_side = Html.fromHtml(card_sides[1]);
+                    showCountTextView.setText(back_side);
+                    break;
+                case FRONT:
+                    Spanned front_side = Html.fromHtml(card_sides[0]);
+                    showCountTextView.setText(front_side);
+                    break;
+            }
         }
     }
 
