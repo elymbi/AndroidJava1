@@ -18,6 +18,7 @@
         android:textColor="@android:color/white"
         android:textSize="72sp"
         android:textStyle="bold"
+        android:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
