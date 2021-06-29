@@ -16,17 +16,14 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.util.stream.Collectors;
 
 import static com.example.javaappbasic1.MainActivity.packageName;
 
 public class FirstFragment extends Fragment {
 
     TextView showCountTextView;
-    boolean front;
+    Side currentSide = Side.FRONT;
 
 
 
@@ -64,6 +61,14 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.count_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                switch (currentSide) {
+                    case BACK:
+                        currentSide = Side.FRONT;
+                        break;
+                    case FRONT:
+                        currentSide = Side.BACK;
+                        break;
+                }
                 displayFile();
             }
         });
@@ -84,7 +89,7 @@ public class FirstFragment extends Fragment {
                 if(card_sides.length == 2){
                     Spanned front_side = Html.fromHtml(card_sides[0]);
                     Spanned back_side = Html.fromHtml(card_sides[1]);
-                    if(front){
+                    if(currentSide == Side.FRONT){
                         showCountTextView.setText(front_side);
                     }
                     else{
@@ -96,7 +101,6 @@ public class FirstFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        front = !front;
     }
 
     private void countMe() {
@@ -104,5 +108,9 @@ public class FirstFragment extends Fragment {
         int count = Integer.parseInt(countString);
         count++;
         showCountTextView.setText(Integer.toString(count));
+    }
+
+    private enum Side{
+        FRONT, BACK
     }
 }
