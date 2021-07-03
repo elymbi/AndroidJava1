@@ -65,35 +65,43 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (currentSide) {
-                    case START:
-                        parseFile("fisi_grundlagen");
-                        currentSide = Side.FRONT;
-                    case BACK:
-                        currentCard += 1;
-                        currentSide = Side.FRONT;
-                        break;
-                    case FRONT:
-                        currentSide = Side.BACK;
-                        break;
-                }
+                switchCardSides(SwitchMode.NEXT);
                 displayCard();
             }
         });
     }
 
+    enum SwitchMode{
+        NEXT,NEXT_BY_KEYWORD
+    }
+
+    private void switchCardSides(SwitchMode switchMode) {
+        switch (currentSide) {
+            case START:
+                parseFile("fisi_grundlagen");
+                currentCard = 0;
+                currentSide = Side.FRONT;
+            case BACK:
+                if (switchMode == SwitchMode.NEXT)
+                    currentCard += 1;
+                else
+                    currentCard = findNextCardWithKeyword("Welche", currentCard+1);
+                currentSide = Side.FRONT;
+                break;
+            case FRONT:
+                currentSide = Side.BACK;
+                break;
+        }
+    }
+
     private void displayNextCardWithKeyword(String keyword) {
-        int next_keyword_index = findNextCardWithKeyword(keyword, currentCard+1);
-        if(next_keyword_index == -1){
+        switchCardSides(SwitchMode.NEXT_BY_KEYWORD);
+        if(currentCard == -1){
             displayNotFound();
         }
         else {
-            savedLastSequenceCard = currentCard;
-            currentCard = next_keyword_index;
-            currentSide = Side.FRONT;
             displayCard();
         }
-
     }
 
     private void displayNotFound() {
