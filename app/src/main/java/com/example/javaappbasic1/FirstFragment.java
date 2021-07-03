@@ -1,6 +1,7 @@
 package com.example.javaappbasic1;
 
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -19,9 +21,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntFunction;
 
 import static com.example.javaappbasic1.MainActivity.packageName;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class FirstFragment extends Fragment {
 
     TextView showCountTextView;
@@ -65,27 +69,20 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchCardSides(SwitchMode.NEXT);
+                uponButtonClick(current -> current+1);
                 displayCard();
             }
         });
     }
 
-    enum SwitchMode{
-        NEXT,NEXT_BY_KEYWORD
-    }
-
-    private void switchCardSides(SwitchMode switchMode) {
+    private void uponButtonClick(IntFunction<Integer> functionUponButtonClick) {
         switch (currentSide) {
             case START:
                 parseFile("fisi_grundlagen");
-                currentCard = 0;
+                currentCard = functionUponButtonClick.apply(-1);
                 currentSide = Side.FRONT;
             case BACK:
-                if (switchMode == SwitchMode.NEXT)
-                    currentCard += 1;
-                else
-                    currentCard = findNextCardWithKeyword("Welche", currentCard+1);
+                currentCard = functionUponButtonClick.apply(currentCard);
                 currentSide = Side.FRONT;
                 break;
             case FRONT:
@@ -95,7 +92,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void displayNextCardWithKeyword(String keyword) {
-        switchCardSides(SwitchMode.NEXT_BY_KEYWORD);
+        uponButtonClick(current -> findNextCardWithKeyword(keyword, current+1));
         if(currentCard == -1){
             displayNotFound();
         }
