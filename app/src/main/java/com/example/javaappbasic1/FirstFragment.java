@@ -28,6 +28,8 @@ public class FirstFragment extends Fragment {
     Side currentSide = Side.START;
     int currentCard = 0;
     List<String> cardsList = null;
+    private int savedLastSequenceCard;
+    private int next_keyword_index;
 
 
     @Override
@@ -47,9 +49,8 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.next_with_keyword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentCount = Integer.parseInt(showCountTextView.getText().toString());
-                FirstFragmentDirections.ActionFirstFragmentToSecondFragment action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentCount);
-                NavHostFragment.findNavController(FirstFragment.this).navigate(action);
+                String keyword = "Welche";
+                displayNextCardWithKeyword(keyword);
             }
         });
 
@@ -79,6 +80,41 @@ public class FirstFragment extends Fragment {
                 displayCard();
             }
         });
+    }
+
+    private void displayNextCardWithKeyword(String keyword) {
+        int next_keyword_index = findNextCardWithKeyword(keyword, currentCard+1);
+        if(next_keyword_index == -1){
+            displayNotFound();
+        }
+        else {
+            savedLastSequenceCard = currentCard;
+            currentCard = next_keyword_index;
+            currentSide = Side.FRONT;
+            displayCard();
+        }
+
+    }
+
+    private void displayNotFound() {
+        showCountTextView.setText("No more cards with this keyword");
+    }
+
+    private int findNextCardWithKeyword(String keyword, int startAt) {
+        for (int i = 0; i < cardsList.size(); i++) {
+            int index = (i + startAt) % cardsList.size();
+            String s = cardsList.get(index);
+            if (s.contains(keyword)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    private void switchToSecondFragment() {
+        int currentCount = Integer.parseInt(showCountTextView.getText().toString());
+        FirstFragmentDirections.ActionFirstFragmentToSecondFragment action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentCount);
+        NavHostFragment.findNavController(FirstFragment.this).navigate(action);
     }
 
     private void parseFile(String fileName) {
