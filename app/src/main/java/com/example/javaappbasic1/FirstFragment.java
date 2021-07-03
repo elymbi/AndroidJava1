@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View fragmentFirstLayout = inflater.inflate(R.layout.fragment_first, container, false);
         showCountTextView = fragmentFirstLayout.findViewById(R.id.textview_first);
+        showCountTextView.setMovementMethod(new ScrollingMovementMethod());
         return fragmentFirstLayout;
     }
 
