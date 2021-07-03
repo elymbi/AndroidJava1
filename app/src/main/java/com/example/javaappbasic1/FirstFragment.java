@@ -44,7 +44,7 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.random_button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.next_with_keyword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currentCount = Integer.parseInt(showCountTextView.getText().toString());
@@ -61,7 +61,7 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.count_button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (currentSide) {

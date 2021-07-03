@@ -5,8 +5,8 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="toast_button_text">Toast</string>
-    <string name="count_button_text">Count</string>
-    <string name="random_button_text">Random</string>
+    <string name="next_button_text">Next</string>
+    <string name="next_with_keyword_button_text">Keyword</string>
     <string name="previous">Previous</string>
     <string name="toast">Peakaboo</string>
     <string name="fromFile">displayFile works</string>
