@@ -14,4 +14,5 @@
     <string name="hello_first_fragment">0</string>
     <string name="random_heading">Here is a random number between 0 and %d.</string>
     <string name="random_number">%d</string>
+    <string name="user_input">none</string>
 </resources>

@@ -1,5 +1,8 @@
 package com.example.javaappbasic1;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +37,7 @@ public class FirstFragment extends Fragment {
     Side currentSide = Side.START;
     int currentCard = 0;
     List<String> cardsList = null;
-    private int savedLastSequenceCard;
-    private int next_keyword_index;
+    String the_user_input;
 
 
     @Override
@@ -56,7 +59,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String keyword = "Welche";
-                displayNextCardWithKeyword(keyword);
+                displayNextCardWithKeyword(the_user_input);
             }
         });
 
@@ -108,10 +111,13 @@ public class FirstFragment extends Fragment {
     }
 
     private int findNextCardWithKeyword(String keyword, int startAt) {
+        if (keyword == null) {
+            return 1;
+        }
         for (int i = 0; i < cardsList.size(); i++) {
             int index = (i + startAt) % cardsList.size();
             String s = cardsList.get(index);
-            if (s.contains(keyword)) {
+            if(s.contains(keyword)){
                 return index;
             }
         }
@@ -138,6 +144,21 @@ public class FirstFragment extends Fragment {
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public class SharedPreferencesActivity extends Activity {
+        private void saveInput() {
+            SharedPreferences sharedPref;
+            sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            the_user_input = ((EditText) findViewById(R.id.edit_text_id)).getText().toString();
+            editor.putString(getString(R.string.user_input), the_user_input);
+            editor.apply();
+        }
+
+//        private String getInput(){
+//            return editor.
+//        }
     }
 
 
