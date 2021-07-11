@@ -61,8 +61,7 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.next_with_keyword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                string_user_input = ((EditText) fragmentFirstLayout.findViewById(R.id.edit_text_id)).getText().toString();
-//                System.out.println(string_user_input);
+                saveInput();
                 displayNextCardWithKeyword(string_user_input);
             }
         });
@@ -150,19 +149,18 @@ public class FirstFragment extends Fragment {
         }
     }
 
-    public class SharedPreferencesActivity extends Activity {
-        private void saveInput() {
-            SharedPreferences sharedPref;
-            sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            string_user_input = ((EditText) findViewById(R.id.edit_text_id)).getText().toString();
-            editor.putString(getString(R.string.user_input), string_user_input);
-            editor.apply();
-        }
+    private void saveInput() {
+        SharedPreferences sharedPref;
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        string_user_input = ((EditText) fragmentFirstLayout.findViewById(R.id.edit_text_id)).getText().toString();
+        editor.putString(getString(R.string.user_input), string_user_input);
+        editor.apply();
+    }
 
-//        private String getInput(){
-//            return editor.
-//        }
+    private void getPreviousInput() {
+        int why_integer = R.string.user_input;
+//        String why_required_string = sharedPref.getInt(R.string.user_input, 0);
     }
 
 
