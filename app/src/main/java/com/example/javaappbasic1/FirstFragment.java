@@ -34,10 +34,12 @@ import static com.example.javaappbasic1.MainActivity.packageName;
 public class FirstFragment extends Fragment {
 
     TextView showCountTextView;
+    View fragmentFirstLayout;
     Side currentSide = Side.START;
     int currentCard = 0;
     List<String> cardsList = null;
-    String the_user_input;
+    View the_user_input;
+    String string_user_input;
 
 
     @Override
@@ -46,9 +48,10 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        View fragmentFirstLayout = inflater.inflate(R.layout.fragment_first, container, false);
+        fragmentFirstLayout = inflater.inflate(R.layout.fragment_first, container, false);
         showCountTextView = fragmentFirstLayout.findViewById(R.id.textview_first);
         showCountTextView.setMovementMethod(new ScrollingMovementMethod());
+        string_user_input = ((EditText) fragmentFirstLayout.findViewById(R.id.edit_text_id)).getText().toString();
         return fragmentFirstLayout;
     }
 
@@ -58,8 +61,9 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.next_with_keyword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String keyword = "Welche";
-                displayNextCardWithKeyword(the_user_input);
+                string_user_input = ((EditText) fragmentFirstLayout.findViewById(R.id.edit_text_id)).getText().toString();
+//                System.out.println(string_user_input);
+                displayNextCardWithKeyword(string_user_input);
             }
         });
 
@@ -151,8 +155,8 @@ public class FirstFragment extends Fragment {
             SharedPreferences sharedPref;
             sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            the_user_input = ((EditText) findViewById(R.id.edit_text_id)).getText().toString();
-            editor.putString(getString(R.string.user_input), the_user_input);
+            string_user_input = ((EditText) findViewById(R.id.edit_text_id)).getText().toString();
+            editor.putString(getString(R.string.user_input), string_user_input);
             editor.apply();
         }
 
